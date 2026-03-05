@@ -1,6 +1,9 @@
 # Keil Assistant
 
-[![](https://vsmarketplacebadge.apphb.com/version/CL.keil-assistant.svg)](https://marketplace.visualstudio.com/items?itemName=CL.keil-assistant)      [![](https://vsmarketplacebadge.apphb.com/installs/CL.keil-assistant.svg)](https://marketplace.visualstudio.com/items?itemName=CL.keil-assistant)     [![](https://vsmarketplacebadge.apphb.com/downloads/CL.keil-assistant.svg)](https://marketplace.visualstudio.com/items?itemName=CL.keil-assistant)     [![](https://vsmarketplacebadge.apphb.com/rating/CL.keil-assistant.svg)](https://marketplace.visualstudio.com/items?itemName=CL.keil-assistant)
+### Fork from [keil-assistant](https://github.com/github0null/keil-assistant)
+Due to the original plugin no longer being updated and encountering some issues during use, the project was forked and some modifications were made for ease of use.
+- When adding a project, you can choose to generate the path *of the generated c_cpp_properties. json file relative to the keil uvproj file, which was previously generated in the directory where the uvproj file is located*
+- Remember the path to the keil uvproj file, and use this path to open the keil project when opening any file. *The dialog box for adding a project originally defaults to the path where the current open file is located*
 
 ## Summary 📑
 

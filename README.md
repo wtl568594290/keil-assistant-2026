@@ -1,8 +1,12 @@
 # Keil Assistant
 
-## 此插件已不再更新，如有需要，请下载源码自行编译后使用
+### Fork自 [keil-assistant](https://github.com/github0null/keil-assistant)
+由于原插件不再更新，且在使用过程中遇到了一些问题，因此 fork 了该项目，进行了一些修改方便使用。
 
-[![](https://vsmarketplacebadge.apphb.com/version/CL.keil-assistant.svg)](https://marketplace.visualstudio.com/items?itemName=CL.keil-assistant)      [![](https://vsmarketplacebadge.apphb.com/installs/CL.keil-assistant.svg)](https://marketplace.visualstudio.com/items?itemName=CL.keil-assistant)     [![](https://vsmarketplacebadge.apphb.com/downloads/CL.keil-assistant.svg)](https://marketplace.visualstudio.com/items?itemName=CL.keil-assistant)     [![](https://vsmarketplacebadge.apphb.com/rating/CL.keil-assistant.svg)](https://marketplace.visualstudio.com/items?itemName=CL.keil-assistant)
+- 添加项目时,可以选择生成的c_cpp_properties.json文件相对于keil uvproj文件的路径 *之前是在uvproj文件所在目录生成的*
+- 记住keil uvproj文件的路径,在打开任何文件的情况下,都使用该路径打开keil项目 *原先添加项目的对话框默认是当前打开文件所在的路径*
+
+`vsce package`
 
 ## [English](./README_EN.md)
 
