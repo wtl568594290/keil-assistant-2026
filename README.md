@@ -6,6 +6,9 @@
 
 - 添加项目时,可以选择生成的c_cpp_properties.json文件相对于keil uvproj文件的路径 *之前是在uvproj文件所在目录生成的*
 - 记住keil uvproj文件的路径,在打开任何文件的情况下,都使用该路径打开keil项目 *原先添加项目的对话框默认是当前打开文件所在的路径*
+- 增加两个C51的snippet用来防止interrupt x报错
+  - isr 中断处理函数
+  - INTERRUPT 中断向量宏
 
 `vsce package`
 

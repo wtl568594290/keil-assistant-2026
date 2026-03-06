@@ -13,6 +13,9 @@ import { FileWatcher } from "../lib/node_utility/FileWatcher";
 import { Time } from "../lib/node_utility/Time";
 import { isArray } from "util";
 import { CmdLineHandler } from "./CmdLineHandler";
+import { c51Snippets } from "./snippets";
+
+let globalSubscriberPush: ((item: any) => void) | null = null;
 
 export function activate(context: vscode.ExtensionContext) {
   console.log("---- keil-assistant actived ----");
@@ -22,6 +25,7 @@ export function activate(context: vscode.ExtensionContext) {
 
   const prjExplorer = new ProjectExplorer(context);
   const subscriber = context.subscriptions;
+  globalSubscriberPush = (item) => subscriber.push(item);
 
   subscriber.push(
     vscode.commands.registerCommand("explorer.open", async () => {
@@ -42,15 +46,15 @@ export function activate(context: vscode.ExtensionContext) {
           const uvPrjPath = uri[0].fsPath;
           await prjExplorer.openProject(uvPrjPath);
 
-          // switch workspace
-          const result = await vscode.window.showInformationMessage(
-            "keil project load done !, switch workspace ?",
-            "Ok",
-            "Later",
-          );
-          if (result === "Ok") {
-            openWorkspace(new File(node_path.dirname(uvPrjPath)));
-          }
+          // // switch workspace
+          // const result = await vscode.window.showInformationMessage(
+          //   "keil project load done !, switch workspace ?",
+          //   "Ok",
+          //   "Later",
+          // );
+          // if (result === "Ok") {
+          //   openWorkspace(new File(node_path.dirname(uvPrjPath)));
+          // }
         }
       } catch (error) {
         vscode.window.showErrorMessage(
@@ -102,11 +106,12 @@ export function activate(context: vscode.ExtensionContext) {
     ),
   );
 
-  prjExplorer.loadWorkspace();
+  // prjExplorer.loadWorkspace();
 }
 
 export function deactivate() {
   console.log("---- keil-assistant closed ----");
+  globalSubscriberPush = null;
 }
 
 //==================== Global Func===========================
@@ -718,6 +723,9 @@ abstract class Target implements IView {
     }
 
     this.updateCppProperties();
+    if (this instanceof C51Target) {
+      globalSubscriberPush(c51Snippets());
+    }
 
     this.updateSourceRefs();
   }
@@ -1388,7 +1396,13 @@ class ProjectExplorer implements vscode.TreeDataProvider<IView> {
           });
         for (const uvFile of uvList) {
           try {
-            await this.openProject(vscodeVariables(uvFile));
+            let path = "";
+            try {
+              path = vscodeVariables(uvFile);
+            } catch (_) {}
+            if (path) {
+              await this.openProject(path);
+            }
           } catch (error) {
             vscode.window.showErrorMessage(
               `open project: '${uvFile.name}' failed !, msg: ${(<Error>error).message}`,
