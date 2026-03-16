@@ -2,6 +2,9 @@
 
 All notable changes to the "keil-assistant-2026" extension will be documented in this file.
 
+## [v0.0.4]
+- 修复多次注册snippet的bug
+
 ## [v0.0.3]
 - 修复打开文件夹或者工作区时加载keil project的功能
 - 更新说明文件

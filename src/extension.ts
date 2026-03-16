@@ -33,7 +33,7 @@ export function activate(context: vscode.ExtensionContext) {
       if (!workspaceFolders || workspaceFolders.length === 0) {
         // 没有打开工作区，不执行初始化
         vscode.window.showErrorMessage(
-          "No workspace folder opened, please open a workspace folder first.",
+          "No workspace folder opened, please open a workspace folder first."
         );
         return;
       }
@@ -64,52 +64,52 @@ export function activate(context: vscode.ExtensionContext) {
         }
       } catch (error) {
         vscode.window.showErrorMessage(
-          `open project failed !, msg: ${(<Error>error).message}`,
+          `open project failed !, msg: ${(<Error>error).message}`
         );
       }
-    }),
+    })
   );
 
   subscriber.push(
     vscode.commands.registerCommand("project.close", (item: IView) =>
-      prjExplorer.closeProject(item.prjID),
-    ),
+      prjExplorer.closeProject(item.prjID)
+    )
   );
 
   subscriber.push(
     vscode.commands.registerCommand("project.build", (item: IView) =>
-      prjExplorer.getTarget(item)?.build(),
-    ),
+      prjExplorer.getTarget(item)?.build()
+    )
   );
 
   subscriber.push(
     vscode.commands.registerCommand("project.rebuild", (item: IView) =>
-      prjExplorer.getTarget(item)?.rebuild(),
-    ),
+      prjExplorer.getTarget(item)?.rebuild()
+    )
   );
 
   subscriber.push(
     vscode.commands.registerCommand("project.download", (item: IView) =>
-      prjExplorer.getTarget(item)?.download(),
-    ),
+      prjExplorer.getTarget(item)?.download()
+    )
   );
 
   subscriber.push(
     vscode.commands.registerCommand("item.copyValue", (item: IView) =>
-      vscode.env.clipboard.writeText(item.tooltip || ""),
-    ),
+      vscode.env.clipboard.writeText(item.tooltip || "")
+    )
   );
 
   subscriber.push(
     vscode.commands.registerCommand("project.switch", (item: IView) =>
-      prjExplorer.switchTargetByProject(item),
-    ),
+      prjExplorer.switchTargetByProject(item)
+    )
   );
 
   subscriber.push(
     vscode.commands.registerCommand("project.active", (item: IView) =>
-      prjExplorer.activeProject(item),
-    ),
+      prjExplorer.activeProject(item)
+    )
   );
 
   prjExplorer.loadWorkspace();
@@ -131,7 +131,7 @@ function getMD5(data: string): string {
 function openWorkspace(wsFile: File) {
   vscode.commands.executeCommand(
     "vscode.openFolder",
-    vscode.Uri.parse(wsFile.ToUri()),
+    vscode.Uri.parse(wsFile.ToUri())
   );
 }
 
@@ -294,7 +294,7 @@ class KeilProject implements IView, KeilProjectInfo {
 
     const logPath = this.vscodeDir.path + File.sep + "keil-assistant.log";
     this.logger = new console.Console(
-      fs.createWriteStream(logPath, { flags: "a+" }),
+      fs.createWriteStream(logPath, { flags: "a+" })
     );
     this.uvprjFile = _uvprjFile;
     this.watcher = new FileWatcher(this.uvprjFile);
@@ -302,7 +302,7 @@ class KeilProject implements IView, KeilProjectInfo {
     this.label = _uvprjFile.noSuffixName;
     this.tooltip = _uvprjFile.path;
     this.logger.log(
-      "[info] Log at : " + Time.GetInstance().GetTimeStamp() + "\r\n",
+      "[info] Log at : " + Time.GetInstance().GetTimeStamp() + "\r\n"
     );
     this.watcher.OnChanged = () => {
       if (
@@ -330,12 +330,12 @@ class KeilProject implements IView, KeilProjectInfo {
     } catch (err) {
       if (err.code && err.code === "EBUSY") {
         this.logger.log(
-          `[Warn] uVision project file '${this.uvprjFile.name}' is locked !, delay 500 ms and retry !`,
+          `[Warn] uVision project file '${this.uvprjFile.name}' is locked !, delay 500 ms and retry !`
         );
         setTimeout(() => this.onReload(), 500);
       } else {
         vscode.window.showErrorMessage(
-          `reload project failed !, msg: ${err.message}`,
+          `reload project failed !, msg: ${err.message}`
         );
       }
     }
@@ -356,12 +356,12 @@ class KeilProject implements IView, KeilProjectInfo {
     if (isArray(targets)) {
       for (const target of targets) {
         this.targetList.push(
-          Target.getInstance(this, this.uVsionFileInfo, target),
+          Target.getInstance(this, this.uVsionFileInfo, target)
         );
       }
     } else {
       this.targetList.push(
-        Target.getInstance(this, this.uVsionFileInfo, targets),
+        Target.getInstance(this, this.uVsionFileInfo, targets)
       );
     }
 
@@ -487,10 +487,10 @@ abstract class Target implements IView {
     this.defines = new Set();
     this.fGroups = [];
     this.uv4LogFile = new File(
-      this.project.vscodeDir.path + File.sep + "uv4.log",
+      this.project.vscodeDir.path + File.sep + "uv4.log"
     );
     this.uv4LogLockFileWatcher = new FileWatcher(
-      new File(this.uv4LogFile.path + ".lock"),
+      new File(this.uv4LogFile.path + ".lock")
     );
 
     if (!this.uv4LogLockFileWatcher.file.IsFile()) {
@@ -520,7 +520,7 @@ abstract class Target implements IView {
   static getInstance(
     prjInfo: KeilProjectInfo,
     uvInfo: uVisonInfo,
-    targetDOM: any,
+    targetDOM: any
   ): Target {
     if (prjInfo.uvprjFile.suffix.toLowerCase() === ".uvproj") {
       return new C51Target(prjInfo, uvInfo, targetDOM);
@@ -545,7 +545,7 @@ abstract class Target implements IView {
 
   private updateCppProperties() {
     const proFile = new File(
-      this.project.vscodeDir.path + File.sep + "c_cpp_properties.json",
+      this.project.vscodeDir.path + File.sep + "c_cpp_properties.json"
     );
     let obj: any;
 
@@ -650,7 +650,7 @@ abstract class Target implements IView {
         const nGrp = new FileGroup(
           this.prjID,
           group["GroupName"],
-          isGroupExcluded,
+          isGroupExcluded
         );
 
         if (Array.isArray(group["Files"])) {
@@ -734,10 +734,10 @@ abstract class Target implements IView {
         { type: "keil-task" },
         vscode.TaskScope.Global,
         name,
-        "shell",
+        "shell"
       );
       task.execution = new vscode.ShellExecution(
-        cmdPrefixSuffix + commandLine + cmdPrefixSuffix,
+        cmdPrefixSuffix + commandLine + cmdPrefixSuffix
       );
       task.isBackground = false;
       task.problemMatchers = this.getProblemMatcher();
@@ -790,7 +790,7 @@ abstract class Target implements IView {
             if (refFile.IsFile()) {
               const refFileList = this.parseRefLines(
                 this.targetDOM,
-                refFile.Read().split(/\r\n|\n/),
+                refFile.Read().split(/\r\n|\n/)
               ).map((rePath) => {
                 return this.project.toAbsolutePath(rePath);
               });
@@ -839,7 +839,7 @@ class C51Target extends Target {
       target["TargetOption"]["Target51"]["C51"] === undefined
     ) {
       return new Error(
-        `This uVision project is not a C51 project, but have a 'uvproj' suffix !`,
+        `This uVision project is not a C51 project, but have a 'uvproj' suffix !`
       );
     }
   }
@@ -1134,8 +1134,8 @@ class ArmTarget extends Target {
           : _line; // remove char '\'
       let subLines = line.trim().split(/(?<![\\:]) /);
 
-      if (lineIndex === 0) // first line
-      {
+      if (lineIndex === 0) {
+        // first line
         for (
           let i = 1;
           i < subLines.length;
@@ -1143,8 +1143,8 @@ class ArmTarget extends Target {
         ) {
           resultList.add(subLines[i].trim().replace(/\\ /g, " "));
         }
-      } else // other lines, first char is whitespace
-      {
+      } // other lines, first char is whitespace
+      else {
         subLines.forEach((item) => {
           resultList.add(item.trim().replace(/\\ /g, " "));
         });
@@ -1182,7 +1182,7 @@ class ArmTarget extends Target {
     if (ArmTarget.armclangBuildinMacros === undefined) {
       const armClangPath =
         node_path.dirname(
-          node_path.dirname(ResourceManager.getInstance().getArmUV4Path()),
+          node_path.dirname(ResourceManager.getInstance().getArmUV4Path())
         ) +
         File.sep +
         "ARM" +
@@ -1201,7 +1201,7 @@ class ArmTarget extends Target {
     if (target["uAC6"] === "1") {
       // ARMClang
       return ArmTarget.armclangMacros.concat(
-        ArmTarget.armclangBuildinMacros || [],
+        ArmTarget.armclangBuildinMacros || []
       );
     } else {
       // ARMCC
@@ -1245,13 +1245,15 @@ class ArmTarget extends Target {
     if (exeFile.IsFile()) {
       const toolName = target["uAC6"] === "1" ? "ARMCLANG" : "ARMCC";
       const incDir = new File(
-        `${node_path.dirname(exeFile.dir)}${File.sep}ARM${File.sep}${toolName}${File.sep}include`,
+        `${node_path.dirname(exeFile.dir)}${File.sep}ARM${File.sep}${toolName}${
+          File.sep
+        }include`
       );
       if (incDir.IsDir()) {
         return [incDir.path].concat(
           incDir.GetList(File.EMPTY_FILTER).map((dir) => {
             return dir.path;
-          }),
+          })
         );
       }
       return [incDir.path];
@@ -1333,12 +1335,12 @@ class ProjectExplorer implements vscode.TreeDataProvider<IView> {
     this.viewEvent = new vscode.EventEmitter();
     this.onDidChangeTreeData = this.viewEvent.event;
     context.subscriptions.push(
-      vscode.window.registerTreeDataProvider("project", this),
+      vscode.window.registerTreeDataProvider("project", this)
     );
     context.subscriptions.push(
       vscode.commands.registerCommand(this.ItemClickCommand, (item) =>
-        this.onItemClick(item),
-      ),
+        this.onItemClick(item)
+      )
     );
   }
 
@@ -1361,7 +1363,9 @@ class ProjectExplorer implements vscode.TreeDataProvider<IView> {
             await this.openProject(uvFile.path);
           } catch (error) {
             vscode.window.showErrorMessage(
-              `open project: '${uvFile.path}' failed !, msg: ${(<Error>error).message}, please check the project file path.`,
+              `open project: '${uvFile.path}' failed !, msg: ${
+                (<Error>error).message
+              }, please check the project file path.`
             );
           }
         }
@@ -1447,7 +1451,7 @@ class ProjectExplorer implements vscode.TreeDataProvider<IView> {
         {
           canPickMany: false,
           placeHolder: "please select a target name for keil project",
-        },
+        }
       );
       if (targetName) {
         prj.setActiveTarget(targetName);
@@ -1516,7 +1520,7 @@ class ProjectExplorer implements vscode.TreeDataProvider<IView> {
             });
           } else {
             vscode.window.showWarningMessage(
-              `Not found file: ${source.file.path}`,
+              `Not found file: ${source.file.path}`
             );
           }
         }
@@ -1547,11 +1551,10 @@ class ProjectExplorer implements vscode.TreeDataProvider<IView> {
     if (element.icons) {
       res.iconPath = {
         light: vscode.Uri.file(
-          ResourceManager.getInstance().getIconByName(element.icons.light) ||
-            "",
+          ResourceManager.getInstance().getIconByName(element.icons.light) || ""
         ),
         dark: vscode.Uri.file(
-          ResourceManager.getInstance().getIconByName(element.icons.dark) || "",
+          ResourceManager.getInstance().getIconByName(element.icons.dark) || ""
         ),
       };
     }
