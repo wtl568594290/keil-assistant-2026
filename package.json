@@ -2,7 +2,7 @@
     "name": "keil-assistant-2026",
     "displayName": "Keil Assistant 2026",
     "description": "An assistant for Keil uVision(fork from Keil Assistant)",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "publisher": "WTL568594290",
     "author": {
         "name": "wtl",
@@ -106,6 +106,10 @@
                 }
             },
             {
+                "command": "project.openWithKeil",
+                "title": "Open With Keil"
+            },
+            {
                 "command": "project.build",
                 "title": "Build",
                 "icon": {
@@ -153,6 +157,10 @@
                 },
                 {
                     "command": "project.active",
+                    "when": "viewItem == Project"
+                },
+                {
+                    "command": "project.openWithKeil",
                     "when": "viewItem == Project"
                 },
                 {

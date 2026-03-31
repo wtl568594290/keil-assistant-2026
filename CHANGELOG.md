@@ -2,6 +2,9 @@
 
 All notable changes to the "keil-assistant-2026" extension will be documented in this file.
 
+## [v0.0.5]
+- 增加一个`Open with keil`的右键菜单
+
 ## [v0.0.4]
 - 修复多次注册snippet的bug
 

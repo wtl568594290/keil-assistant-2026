@@ -112,6 +112,12 @@ export function activate(context: vscode.ExtensionContext) {
     )
   );
 
+  subscriber.push(
+    vscode.commands.registerCommand("project.openWithKeil", (item: IView) => {
+      prjExplorer.openWithKeil(item);
+    })
+  );
+
   prjExplorer.loadWorkspace();
 }
 
@@ -444,6 +450,37 @@ class KeilProject implements IView, KeilProjectInfo {
 
   getTargets(): Target[] {
     return this.targetList;
+  }
+
+  openWithKeil() {
+    const targetName = this.activeTargetName;
+    const path = this.uvprjFile.path;
+    let uv4Path = "";
+    if (this.uvprjFile.suffix.toLowerCase() === ".uvproj") {
+      uv4Path = ResourceManager.getInstance().getC51UV4Path();
+    } else {
+      uv4Path = ResourceManager.getInstance().getArmUV4Path();
+    }
+
+    // 使用 child_process.spawn 后台执行，不显示终端窗口
+    const { spawn } = require("child_process");
+    const args: string[] = [path];
+
+    // Keil UV4.exe 支持 -t 参数指定 Target
+    if (targetName) {
+      args.push("-t", targetName);
+    }
+
+    const keilProcess = spawn(`"${uv4Path}"`, args, {
+      detached: true,
+      stdio: "ignore", // 忽略所有输出，不显示任何窗口
+      shell: true, // 使用 shell 执行，支持带空格的路径
+      windowsHide: true, // Windows 专用：隐藏控制台窗口
+    });
+
+    keilProcess.unref(); // 让子进程独立运行，父进程退出后子进程继续
+
+    console.log(`[Keil Assistant] Opening project: ${path} with target: ${targetName || 'default'}`);
   }
 }
 
@@ -1456,6 +1493,12 @@ class ProjectExplorer implements vscode.TreeDataProvider<IView> {
       if (targetName) {
         prj.setActiveTarget(targetName);
       }
+    }
+  }
+  async openWithKeil(view: IView) {
+    const prj = this.prjList.get(view.prjID);
+    if (prj) {
+      prj.openWithKeil();
     }
   }
 
